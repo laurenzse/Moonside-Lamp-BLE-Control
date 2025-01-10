@@ -92,7 +92,7 @@ async with MoonsideLamp("MOONSIDE-S1") as lamp:
 - **`set_brightness(brightness: int)`**: Sets the lamp brightness (0–120).  
 - **`set_color(color: RGBColor, brightness: Optional[int] = None)`**: Sets the lamp color using an `RGBColor`; optionally override brightness.  
 - **`set_theme(theme_config: ThemeConfig)`**: Applies a theme by sending a validated command string.  
-- **`set_pixel(pixel_id: int, brightness: int, color_str: str)`**: Sets a single pixel to a color (advanced usage).  
+- **`set_pixel(pixel_id: int, brightness: int, color: RGBColor)`**: Sets a single pixel to a color (advanced usage).  
 - **`apply_pixel_mode()`**: Applies all pixel changes.
 
 ### RGBColor
@@ -106,8 +106,7 @@ class RGBColor:
     g: int  # (0..255)
     b: int  # (0..255)
 
-    def to_commastr(self) -> str:
-        ...
+    # ...
 ```
 
 Use it like:
@@ -128,8 +127,7 @@ Defined in **`theme.py`**:
    - Holds a `name: ThemeName`  
    - Optionally a `numeric_param: int` (if `has_numeric=True`)  
    - A list of `colors: List[RGBColor]`  
-   - Validates that the **correct** number of colors and numeric parameters are provided  
-   - Generates the final command string (e.g. `"THEME.TWINKLE1.255,0,0,0,0,255,"`)
+   - Validates that the **correct** number of colors and numeric parameters are provided
 
 Example usage:
 
