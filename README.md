@@ -6,7 +6,9 @@ This project provides a **Python-based** Bluetooth Low Energy (BLE) control inte
 - Set the **brightness**  
 - Set a **color** (using RGB values)  
 - Apply **thematic** color/effect configurations  
-- Optionally manipulate **individual pixels** (if supported by your lamp)
+- Manipulate **individual pixels**
+
+This project is provided as-is and is **unofficial**. The underlying Bluetooth protocol for the Moonside Lamp was partially reverse-engineered. Use it at your own risk and be mindful of any firmware updates from the official vendor that could change or break compatibility. Remember to respect any **trademarks** or **intellectual property** of the Moonside brand.
 
 ---
 
@@ -20,10 +22,8 @@ This project provides a **Python-based** Bluetooth Low Energy (BLE) control inte
    - [RGBColor](#rgbcolor)  
    - [ThemeConfig and ThemeName](#themeconfig-and-themename)  
 4. [Available Themes](#available-themes)  
-5. [Example Code Snippets](#example-code-snippets)  
-6. [License](#license)  
+5. [Example Code Snippets](#example-code-snippets) 
 
----
 
 
 ---
@@ -249,8 +249,6 @@ if __name__ == "__main__":
 
 ### 3. Pixel-Level Commands
 
-*(Advanced / optional — only if your Moonside Lamp firmware supports direct pixel addressing.)*
-
 ```python
 async def pixel_demo():
     async with MoonsideLamp("MOONSIDE-S1") as lamp:
@@ -264,11 +262,3 @@ async def pixel_demo():
         # Apply changes
         await lamp.apply_pixel_mode()
 ```
-
----
-
-## License
-
-This project is provided as-is and is **unofficial**. The underlying Bluetooth protocol for the Moonside Lamp was partially reverse-engineered. Use it at your own risk and be mindful of any firmware updates from the official vendor that could change or break compatibility.  
-
-You may adapt or distribute this code under your own chosen license (e.g., MIT, Apache 2.0) if appropriate. Remember to respect any **trademarks** or **intellectual property** of the Moonside brand.
