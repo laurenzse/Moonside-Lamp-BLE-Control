@@ -30,14 +30,7 @@ This project is provided as-is and is **unofficial**. The underlying Bluetooth p
 
 ## Installation
 
-1. **Clone** or **download** this repository:
-
-   ```bash
-   git clone https://github.com/<your-repo>/my_moonside_project.git
-   cd my_moonside_project
-   ```
-
-2. **Install Dependencies**:
+1. **Install Dependencies**:
 
    ```bash
    pip install -r requirements.txt
@@ -45,7 +38,7 @@ This project is provided as-is and is **unofficial**. The underlying Bluetooth p
 
    This will install [Bleak](https://github.com/hbldh/bleak) and any other required libraries.
 
-3. **Confirm BLE Support**:
+2. **Confirm BLE Support**:
 
    - On **Windows**, ensure you have at least Windows 10 with Bluetooth LE support.  
    - On **Linux**, you may need additional packages such as `bluez` and permission adjustments to use BLE.  
