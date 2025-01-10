@@ -1,5 +1,3 @@
-# ble_lamp.py
-
 import asyncio
 from typing import Optional
 
@@ -13,7 +11,9 @@ class MoonsideLamp:
     Provides high-level controls for a Moonside lamp over BLE using Nordic UART Service (NUS).
     """
 
-    NORDIC_UART_RX_DESCRIPTION = "Nordic UART RX"  # Commonly used to find the TX->RX characteristic
+    NORDIC_UART_RX_DESCRIPTION = (
+        "Nordic UART RX"  # Commonly used to find the TX->RX characteristic
+    )
 
     def __init__(self, device_name: str) -> None:
         """
@@ -88,7 +88,7 @@ class MoonsideLamp:
         if not self.client or not self.client.is_connected:
             raise RuntimeError("Not connected to the lamp.")
 
-        data = bytes.fromhex(command.encode('ascii').hex())
+        data = bytes.fromhex(command.encode("ascii").hex())
         await self.client.write_gatt_char(self.rx_characteristic, data, response=True)
 
     # ----------------------------
@@ -117,7 +117,9 @@ class MoonsideLamp:
         cmd = f"BRIGH{brightness:03d}"
         await self._send_command(cmd)
 
-    async def set_color(self, color: RGBColor, brightness: Optional[int] = None) -> None:
+    async def set_color(
+        self, color: RGBColor, brightness: Optional[int] = None
+    ) -> None:
         """
         Set the lamp color using an RGBColor object. Optionally specify brightness (0..120).
 
@@ -147,15 +149,15 @@ class MoonsideLamp:
     # Pixel-Level Control (Optional)
     # --------------------------------
 
-    async def set_pixel(self, pixel_id: int, brightness: int, color_str: str) -> None:
+    async def set_pixel(self, pixel_id: int, brightness: int, color: RGBColor) -> None:
         """
         Set a single pixel's brightness and color.
         Example command: "PIXEL,1,50 COLOR255000000" → pixel 1, brightness 50, color #FF0000
         :param pixel_id: The index of the LED (0..N).
         :param brightness: Brightness for this pixel (0..120).
-        :param color_str: The color in a format like '255000000' or other discovered format.
+        :param color: An RGBColor specifying red, green, and blue channels (0..255).
         """
-        cmd = f"PIXEL,{pixel_id},{brightness} COLOR{color_str}"
+        cmd = f"PIXEL,{pixel_id},{brightness} COLOR{color.r:03d}{color.g:03d}{color.b:03d}"
         await self._send_command(cmd)
 
     async def apply_pixel_mode(self) -> None:

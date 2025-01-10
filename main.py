@@ -17,8 +17,9 @@ async def demo():
 
     # Create a ThemeConfig for RAINBOW1, which allows 1 numeric param and 0 colors
     palette_config = ThemeConfig(
-        name=ThemeName.PALETTE2,
-        colors=[RGBColor(255, 0, 0), RGBColor(0, 0, 255), RGBColor(0, 255, 0), RGBColor(255, 0, 0), RGBColor(0, 0, 255), RGBColor(0, 255, 0)]
+        name=ThemeName.BEAT2,
+        colors=[RGBColor(255, 0, 0), RGBColor(0, 255, 0)],
+        numeric_param=2
     )
 
     # Example config for TWINKLE1, which has 2 color inputs and no numeric param
@@ -35,26 +36,26 @@ async def demo():
         await lamp.turn_on()
         print("Lamp turned on.")
 
-        await lamp.set_brightness(80)
-        print("Lamp brightness set to 80.")
-
-        # Set a bright green color
-        green = RGBColor(r=0, g=255, b=0)
-        await lamp.set_color(green, brightness=80)
+        # await lamp.set_brightness(80)
+        # print("Lamp brightness set to 80.")
+        #
+        # # Set a bright green color
+        # green = RGBColor(r=0, g=255, b=0)
+        # await lamp.set_color(green, brightness=80)
 
         # Apply the RAINBOW1 theme
         await lamp.set_theme(palette_config)
         print("Rainbow1 theme set.")
 
-        # Wait a bit, then switch to Twinkle1
-        await asyncio.sleep(3)
-        await lamp.set_theme(twinkle_config)
-        print("Twinkle1 theme set with red and blue colors.")
-
-        # Finally, turn the lamp off
-        await asyncio.sleep(3)
-        await lamp.turn_off()
-        print("Lamp turned off.")
+        # # Wait a bit, then switch to Twinkle1
+        # await asyncio.sleep(3)
+        # await lamp.set_theme(twinkle_config)
+        # print("Twinkle1 theme set with red and blue colors.")
+        #
+        # # Finally, turn the lamp off
+        # await asyncio.sleep(3)
+        # await lamp.turn_off()
+        # print("Lamp turned off.")
 
 def main():
     asyncio.run(demo())
