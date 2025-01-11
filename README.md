@@ -61,6 +61,20 @@ python main.py
 - The script will **scan** for BLE devices.
 - If a device matching your lamp’s **advertised name** is found, it will **connect** and **send** commands.
 
+### Reconnection Mechanism
+
+The **MoonsideLamp** class includes a built-in **reconnection mechanism** to ensure commands are executed even if the lamp disconnects temporarily. When sending a command (e.g., `turn_on()`), the class will:
+
+1. Check if the lamp is still connected.
+2. If disconnected, attempt to **reconnect** up to a configurable number of retries (`max_reconnect_attempts`, default is 3).
+3. If reconnection is successful, the command is sent immediately.
+
+If reconnection fails after the configured attempts, a `RuntimeError` is raised. You can configure the number of reconnection attempts when creating the lamp instance:
+
+```python
+lamp = MoonsideLamp(device_name="MOONSIDE-S1", max_reconnect_attempts=5)
+```
+
 *(See [Example Code Snippets](#example-code-snippets) below for more detailed usage.)*
 
 ---
@@ -254,4 +268,84 @@ async def pixel_demo():
         
         # Apply changes
         await lamp.apply_pixel_mode()
+```
+
+### 4. Controlling Multiple Lamps Concurrently
+
+You can control multiple lamps in parallel by creating a separate `MoonsideLamp` instance for each device. Each instance manages its own BLE connection and commands. The example below demonstrates turning on two lamps, setting their colors, and turning them off:
+
+```python
+import asyncio
+from ble_lamp import MoonsideLamp
+from color import RGBColor
+
+async def control_two_lamps():
+    # Create instances for two lamps
+    lamp1 = MoonsideLamp("MOONSIDE-A")
+    lamp2 = MoonsideLamp("MOONSIDE-B")
+
+    # Use async context managers to ensure proper connection/disconnection
+    async with lamp1, lamp2:
+        # Turn both lamps on concurrently
+        await asyncio.gather(lamp1.turn_on(), lamp2.turn_on())
+
+        # Set different colors for each lamp
+        await lamp1.set_color(RGBColor(255, 0, 0), brightness=80)  # Red for Lamp 1
+        await lamp2.set_color(RGBColor(0, 255, 0), brightness=100)  # Green for Lamp 2
+
+        # Wait for 3 seconds to observe the lights
+        await asyncio.sleep(3)
+
+        # Turn both lamps off concurrently
+        await asyncio.gather(lamp1.turn_off(), lamp2.turn_off())
+
+if __name__ == "__main__":
+    asyncio.run(control_two_lamps())
+```
+
+
+
+
+
+---
+
+## Usage
+
+
+
+---
+
+## Example Code Snippets
+
+### 3. Controlling Multiple Lamps Concurrently
+
+You can control multiple lamps in parallel by creating a separate `MoonsideLamp` instance for each device. Each instance manages its own BLE connection and commands. The example below demonstrates turning on two lamps, setting their colors, and turning them off:
+
+```python
+import asyncio
+from ble_lamp import MoonsideLamp
+from color import RGBColor
+
+async def control_two_lamps():
+    # Create instances for two lamps
+    lamp1 = MoonsideLamp("MOONSIDE-A")
+    lamp2 = MoonsideLamp("MOONSIDE-B")
+
+    # Use async context managers to ensure proper connection/disconnection
+    async with lamp1, lamp2:
+        # Turn both lamps on concurrently
+        await asyncio.gather(lamp1.turn_on(), lamp2.turn_on())
+
+        # Set different colors for each lamp
+        await lamp1.set_color(RGBColor(255, 0, 0), brightness=80)  # Red for Lamp 1
+        await lamp2.set_color(RGBColor(0, 255, 0), brightness=100)  # Green for Lamp 2
+
+        # Wait for 3 seconds to observe the lights
+        await asyncio.sleep(3)
+
+        # Turn both lamps off concurrently
+        await asyncio.gather(lamp1.turn_off(), lamp2.turn_off())
+
+if __name__ == "__main__":
+    asyncio.run(control_two_lamps())
 ```

@@ -18,8 +18,7 @@ async def demo():
     # Create a ThemeConfig for RAINBOW1, which allows 1 numeric param and 0 colors
     palette_config = ThemeConfig(
         name=ThemeName.BEAT2,
-        colors=[RGBColor(255, 0, 0), RGBColor(0, 255, 0)],
-        numeric_param=2
+        colors=[RGBColor(255, 0, 0), RGBColor(0, 255, 0)]
     )
 
     # Example config for TWINKLE1, which has 2 color inputs and no numeric param
@@ -28,12 +27,16 @@ async def demo():
         colors=[RGBColor(255, 0, 0), RGBColor(0, 0, 255)]
     )
 
+    lamp1 = MoonsideLamp("MOONSIDE-L1")
+    lamp2 = MoonsideLamp("MOONSIDE-S1")
+
     # Replace "MOONSIDE-S1" with the actual BLE name broadcast by your lamp
-    async with MoonsideLamp("MOONSIDE-S1") as lamp:
+    async with lamp1, lamp2:
         print("Lamp connected.")
 
         # Basic commands
-        await lamp.turn_on()
+        await lamp1.turn_on()
+        await lamp2.turn_on()
         print("Lamp turned on.")
 
         # await lamp.set_brightness(80)
@@ -44,7 +47,7 @@ async def demo():
         # await lamp.set_color(green, brightness=80)
 
         # Apply the RAINBOW1 theme
-        await lamp.set_theme(palette_config)
+        await lamp1.set_theme(palette_config)
         print("Rainbow1 theme set.")
 
         # # Wait a bit, then switch to Twinkle1
