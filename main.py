@@ -1,6 +1,9 @@
 # main.py
 
 import asyncio
+import math
+import time
+
 from ble_lamp import MoonsideLamp
 from theme import ThemeConfig, ThemeName
 from color import RGBColor
@@ -27,17 +30,37 @@ async def demo():
         colors=[RGBColor(255, 0, 0), RGBColor(0, 0, 255)]
     )
 
-    lamp1 = MoonsideLamp("MOONSIDE-L1")
+    # lamp1 = MoonsideLamp("MOONSIDE-L1")
     lamp2 = MoonsideLamp("MOONSIDE-S1")
 
-    # Replace "MOONSIDE-S1" with the actual BLE name broadcast by your lamp
-    async with lamp1, lamp2:
-        print("Lamp connected.")
+    base_color = RGBColor(138, 43, 226)
+    duration = 30
+    start_time = time.time()
 
-        # Basic commands
-        await lamp1.turn_on()
+    master_brightness = 0
+
+    async with lamp2:
         await lamp2.turn_on()
-        print("Lamp turned on.")
+
+        while start_time + duration > time.time():
+            print(f"{master_brightness=}")
+            master_brightness = max(0, min(1, master_brightness + 0.01))
+            brightness_factor = math.sqrt(master_brightness)
+            color_factor = math.sqrt(master_brightness)
+
+            set_brightness = int(brightness_factor * 120)
+            set_color = RGBColor(int(base_color.r * color_factor), int(base_color.g * color_factor), int(base_color.b * color_factor))
+            await lamp2.set_color(set_color, brightness=set_brightness)
+            await asyncio.sleep(0.05)
+
+    # Replace "MOONSIDE-S1" with the actual BLE name broadcast by your lamp
+    # async with lamp1, lamp2:
+    #     print("Lamp connected.")
+    #
+    #     # Basic commands
+    #     await lamp1.turn_on()
+    #     await lamp2.turn_on()
+    #     print("Lamp turned on.")
 
         # await lamp.set_brightness(80)
         # print("Lamp brightness set to 80.")
@@ -47,8 +70,8 @@ async def demo():
         # await lamp.set_color(green, brightness=80)
 
         # Apply the RAINBOW1 theme
-        await lamp1.set_theme(palette_config)
-        print("Rainbow1 theme set.")
+        # await lamp1.set_theme(palette_config)
+        # print("Rainbow1 theme set.")
 
         # # Wait a bit, then switch to Twinkle1
         # await asyncio.sleep(3)
