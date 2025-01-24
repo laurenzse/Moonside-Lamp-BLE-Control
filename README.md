@@ -159,9 +159,7 @@ await lamp.set_theme(config)
 
 ## Available Themes
 
-Below is the current list of **ThemeName** entries and the number of color inputs each requires (based on `THEME_METADATA`). All of these do **not** accept a numeric parameter unless indicated otherwise (`has_numeric=False` in all entries shown):
-
-Here is the simplified table of the themes, focusing only on their names and the number of colors they require:
+Below is the current list of **ThemeName** entries and the number of color inputs each requires (based on `THEME_METADATA`):
 
 | **Theme Name**    | **num_colors** |
 |-------------------|----------------|
@@ -271,53 +269,6 @@ async def pixel_demo():
 ```
 
 ### 4. Controlling Multiple Lamps Concurrently
-
-You can control multiple lamps in parallel by creating a separate `MoonsideLamp` instance for each device. Each instance manages its own BLE connection and commands. The example below demonstrates turning on two lamps, setting their colors, and turning them off:
-
-```python
-import asyncio
-from ble_lamp import MoonsideLamp
-from color import RGBColor
-
-async def control_two_lamps():
-    # Create instances for two lamps
-    lamp1 = MoonsideLamp("MOONSIDE-A")
-    lamp2 = MoonsideLamp("MOONSIDE-B")
-
-    # Use async context managers to ensure proper connection/disconnection
-    async with lamp1, lamp2:
-        # Turn both lamps on concurrently
-        await asyncio.gather(lamp1.turn_on(), lamp2.turn_on())
-
-        # Set different colors for each lamp
-        await lamp1.set_color(RGBColor(255, 0, 0), brightness=80)  # Red for Lamp 1
-        await lamp2.set_color(RGBColor(0, 255, 0), brightness=100)  # Green for Lamp 2
-
-        # Wait for 3 seconds to observe the lights
-        await asyncio.sleep(3)
-
-        # Turn both lamps off concurrently
-        await asyncio.gather(lamp1.turn_off(), lamp2.turn_off())
-
-if __name__ == "__main__":
-    asyncio.run(control_two_lamps())
-```
-
-
-
-
-
----
-
-## Usage
-
-
-
----
-
-## Example Code Snippets
-
-### 3. Controlling Multiple Lamps Concurrently
 
 You can control multiple lamps in parallel by creating a separate `MoonsideLamp` instance for each device. Each instance manages its own BLE connection and commands. The example below demonstrates turning on two lamps, setting their colors, and turning them off:
 
